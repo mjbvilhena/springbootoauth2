@@ -59,13 +59,6 @@ import javax.servlet.Filter;
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SocialApplication extends WebSecurityConfigurerAdapter {
 
-    /*TODO:remove this!
-	@RequestMapping("/user")
-	public Principal user(Principal principal) {
-		return principal;
-	}
-	*/
-
     @RequestMapping({ "/user", "/me" })
     public Map<String, String> user(Principal principal) {
         Map<String, String> map = new LinkedHashMap<>();
@@ -117,27 +110,11 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
         return new ClientResources();
     }
 
-    /*
-    @Bean
-    @ConfigurationProperties("facebook.resource")
-    public ResourceServerProperties facebookResource() {
-        return new ResourceServerProperties();
-    }
-    */
-
     @Bean
     @ConfigurationProperties("github")
     public ClientResources github() {
         return new ClientResources();
     }
-
-    /*
-    @Bean
-    @ConfigurationProperties("github.resource")
-    public ResourceServerProperties githubResource() {
-        return new ResourceServerProperties();
-    }
-    */
 
     @Bean
     public FilterRegistrationBean oauth2ClientFilterRegistration(
@@ -165,47 +142,6 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
             return resource;
         }
     }
-
-    /*TODO:remove this!
-    private Filter ssoFilterOld() {
-        OAuth2ClientAuthenticationProcessingFilter facebookFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/facebook");
-
-        OAuth2RestTemplate facebookTemplate = new OAuth2RestTemplate(facebook(), oauth2ClientContext);
-        facebookFilter.setRestTemplate(facebookTemplate);
-
-        UserInfoTokenServices tokenServices = new UserInfoTokenServices(facebookResource().getUserInfoUri(), facebook().getClientId());
-        tokenServices.setRestTemplate(facebookTemplate);
-        facebookFilter.setTokenServices(tokenServices);
-
-        return facebookFilter;
-    }
-    */
-
-    /*TODO:remove this!
-    private Filter ssoFilterCompositeOld() {
-        CompositeFilter filter = new CompositeFilter();
-        List<Filter> filters = new ArrayList<>();
-
-        OAuth2ClientAuthenticationProcessingFilter facebookFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/facebook");
-        OAuth2RestTemplate facebookTemplate = new OAuth2RestTemplate(facebook(), oauth2ClientContext);
-        facebookFilter.setRestTemplate(facebookTemplate);
-        UserInfoTokenServices tokenServices = new UserInfoTokenServices(facebookResource().getUserInfoUri(), facebook().getClientId());
-        tokenServices.setRestTemplate(facebookTemplate);
-        facebookFilter.setTokenServices(tokenServices);
-        filters.add(facebookFilter);
-
-        OAuth2ClientAuthenticationProcessingFilter githubFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/github");
-        OAuth2RestTemplate githubTemplate = new OAuth2RestTemplate(github(), oauth2ClientContext);
-        githubFilter.setRestTemplate(githubTemplate);
-        tokenServices = new UserInfoTokenServices(githubResource().getUserInfoUri(), github().getClientId());
-        tokenServices.setRestTemplate(githubTemplate);
-        githubFilter.setTokenServices(tokenServices);
-        filters.add(githubFilter);
-
-        filter.setFilters(filters);
-        return filter;
-    }
-    */
 
     private Filter ssoFilterComposite() {
         CompositeFilter filter = new CompositeFilter();
