@@ -59,10 +59,17 @@ import javax.servlet.Filter;
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SocialApplication extends WebSecurityConfigurerAdapter {
 
-    @RequestMapping({ "/user", "/me" })
+    @RequestMapping({ "/user" })
     public Map<String, String> user(Principal principal) {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("name", principal.getName());
+        return map;
+    }
+
+    @RequestMapping({ "/me" })
+    public Map<String, String> me(Principal principal) {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("name", "[name: " + principal.getName() + "]");
         return map;
     }
 
